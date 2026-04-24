@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8" />
+<title>TravelPay - Kantor Online</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- FONT -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f6f8;
+  --card:#fff;
+  --text:#111;
+  --muted:#6b7280;
+  --blue:#2563eb;
+}
+
+body.dark{
+  --bg:#0b1220;
+  --card:#111c2e;
+  --text:#e5e7eb;
+  --muted:#94a3b8;
+}
+
+body{
+  margin:0;
+  font-family:'Inter', Arial, sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  padding:30px 14px;
+  transition:.4s;
+}
+
+.app{max-width:420px;width:100%}
+
+/* HEADER */
+.header{
+  margin-bottom:16px;
+}
+
+.header h1{
+  font-size:22px;
+  margin-bottom:4px;
+  background: linear-gradient(90deg, #2563eb, #22c55e);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight:700;
+}
+
+.header p{
+  font-size:13px;
+  color:var(--muted);
+}
+
+/* CARD */
+.card{
+  background:var(--card);
+  padding:16px;
+  border-radius:16px;
+  margin-bottom:14px;
+  box-shadow:0 10px 25px rgba(0,0,0,.08);
+  transition:.25s;
+}
+
+.card:hover{
+  transform:translateY(-2px);
+}
+
+.card-title{
+  font-size:12px;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+
+.input-row{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  background:rgba(148,163,184,.12);
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+.amount-input{
+  border:none;
+  background:transparent;
+  font-size:18px;
+  font-weight:bold;
+  width:120px;
+  text-align:right;
+  color:var(--text);
+}
+
+.currency{
+  font-weight:600;
+}
+
+/* RESULT */
+.result{
+  text-align:center;
+}
+
+.result h2{
+  font-size:30px;
+  color:var(--blue);
+}
+
+/* LIVE (POPRAWIONE) */
+.live{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.badge{
+  background:rgba(34,197,94,.15);
+  color:#22c55e;
+  font-size:11px;
+  padding:4px 10px;
+  border-radius:999px;
+  border:1px solid rgba(34,197,94,.4);
+  animation:pulseLive 2s infinite;
+}
+
+@keyframes pulseLive{
+  0%{
+    transform:scale(1);
+    box-shadow:0 0 0 rgba(34,197,94,0);
+  }
+  50%{
+    transform:scale(1.05);
+    box-shadow:0 0 12px rgba(34,197,94,.25);
+  }
+  100%{
+    transform:scale(1);
+    box-shadow:0 0 0 rgba(34,197,94,0);
+  }
+}
+
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.4);
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-box{
+  width:90%;
+  max-width:360px;
+  background:var(--card);
+  border-radius:16px;
+  padding:16px;
+}
+
+.search{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:rgba(148,163,184,.15);
+  color:var(--text);
+  margin-bottom:10px;
+}
+
+.currency-item{
+  display:flex;
+  justify-content:space-between;
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.currency-item:hover{
+  background:rgba(37,99,235,.1);
+}
+
+/* DARK BUTTON */
+.toggle{
+  position:fixed;
+  top:10px;
+  right:10px;
+  width:46px;
+  height:46px;
+  border-radius:12px;
+  background:var(--card);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="toggle" onclick="toggleTheme()">🌙</div>
+
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <h1>TravelPay</h1>
+    <p>Przeliczaj waluty w czasie rzeczywistym</p>
+  </div>
+
+  <!-- INPUT -->
+  <div class="card">
+    <div class="card-title">Ile wymieniasz?</div>
+    <div class="input-row">
+      <div>🇺🇸 USD</div>
+      <input class="amount-input" type="number" value="1000">
+    </div>
+  </div>
+
+  <!-- TARGET -->
+  <div class="card">
+    <div class="card-title">Waluta docelowa</div>
+    <div class="input-row" id="openModal">
+      <div id="targetCurrency">🇵🇱 PLN</div>
+    </div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="card result">
+    <h2 id="result">0 PLN</h2>
+    <div id="rate"></div>
+  </div>
+
+  <!-- LIVE -->
+  <div class="card live">
+    <div>
+      <div style="font-size:12px;color:var(--muted)">Live Rate</div>
+      <div id="live">—</div>
+    </div>
+    <div class="badge">LIVE</div>
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+
+    <input class="search" id="search" placeholder="Szukaj waluty..." />
+
+    <div id="list"></div>
+
+  </div>
+</div>
+
+<script>
+
+const modal=document.getElementById("modal");
+const openModal=document.getElementById("openModal");
+const list=document.getElementById("list");
+const search=document.getElementById("search");
+
+const targetEl=document.getElementById("targetCurrency");
+const input=document.querySelector(".amount-input");
+const resultEl=document.getElementById("result");
+const rateEl=document.getElementById("rate");
+const live=document.getElementById("live");
+
+let base="USD";
+let target="PLN";
+let amount=1000;
+let rates={};
+
+const flags={
+USD:"🇺🇸 USD",
+PLN:"🇵🇱 PLN",
+EUR:"🇪🇺 EUR",
+GBP:"🇬🇧 GBP",
+JPY:"🇯🇵 JPY",
+CHF:"🇨🇭 CHF"
+};
+
+const currencies=["PLN","EUR","GBP","USD","JPY","CHF"];
+
+/* OPEN */
+openModal.onclick=()=>modal.style.display="flex";
+modal.onclick=e=>{if(e.target===modal) modal.style.display="none";};
+
+/* INPUT */
+input.oninput=e=>{
+amount=Number(e.target.value);
+calc();
+};
+
+/* SEARCH */
+search.oninput=render;
+
+/* FALLBACK */
+function setDefaultRates(){
+rates={
+USD:1,
+PLN:4.0,
+EUR:0.92,
+GBP:0.78,
+JPY:150,
+CHF:0.88
+};
+}
+
+/* API */
+async function load(){
+try{
+const res=await fetch(`https://api.frankfurter.app/latest?from=${base}`);
+const data=await res.json();
+
+rates=data.rates;
+rates["USD"]=1;
+
+calc();
+render();
+
+}catch(e){
+setDefaultRates();
+calc();
+render();
+}
+}
+
+/* 💱 CALC */
+function calc(){
+
+if(!rates[target]) return;
+
+const result = amount * rates[target];
+
+resultEl.textContent = `${result.toFixed(2)} ${target}`;
+rateEl.textContent = `1 USD = ${rates[target].toFixed(4)} ${target}`;
+live.textContent = `1 USD = ${rates[target].toFixed(4)} ${target}`;
+}
+
+/* LIST */
+function render(){
+
+const q = search.value?.toLowerCase() || "";
+
+list.innerHTML = currencies
+.filter(c=>c.toLowerCase().includes(q))
+.map(c=>`
+<div class="currency-item" onclick="select('${c}')">
+<span>${flags[c]}</span>
+</div>
+`).join("");
+}
+
+/* SELECT */
+window.select=(c)=>{
+target=c;
+targetEl.textContent=flags[c];
+modal.style.display="none";
+calc();
+};
+
+/* THEME */
+function toggleTheme(){
+document.body.classList.toggle("dark");
+}
+
+/* START */
+setDefaultRates();
+load();
+
+</script>
+
+</body>
+</html>
