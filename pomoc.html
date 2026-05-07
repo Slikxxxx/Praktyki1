@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>TravelPay - Pomoc</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f6f8;
+  --card:#ffffff;
+  --text:#111;
+  --muted:#6b7280;
+  --blue:#2563eb;
+}
+
+*{
+  box-sizing:border-box;
+  transition:.25s;
+}
+
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 30px;
+  border-bottom:1px solid rgba(0,0,0,.08);
+  background:white;
+}
+
+body.dark{
+  --bg:#020617;
+  --card:#0f172a;
+  --text:#e2e8f0;
+  --muted:#94a3b8;
+}
+
+body.dark .header{
+  background:#020617;
+}
+
+body.dark .faq-item{
+  background:var(--card);
+}
+
+.nav-wrapper{
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+}
+
+.toggle{
+  cursor:pointer;
+  font-size:22px;
+  padding:6px 10px;
+  border-radius:10px;
+  background:var(--card);
+  user-select:none;
+}
+
+.logo{
+  font-weight:700;
+  color:var(--blue);
+  font-size:18px;
+}
+
+.nav{
+  display:flex;
+  gap:30px;
+}
+
+.nav a{
+  text-decoration:none;
+}
+
+.nav-item{
+  color:#6b7280;
+  position:relative;
+}
+
+.nav-item.active{
+  color:#111;
+  font-weight:600;
+}
+
+.nav-item::after{
+  content:"";
+  position:absolute;
+  bottom:-5px;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--blue);
+  transition:.3s;
+}
+
+.nav-item:hover::after,
+.nav-item.active::after{
+  width:100%;
+}
+
+
+.hero{
+  text-align:center;
+  padding:60px 20px 30px;
+}
+
+.hero h1{
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+.hero p{
+  color:var(--muted);
+  max-width:700px;
+  margin:auto;
+}
+
+
+.search-box{
+  max-width:700px;
+  margin:30px auto;
+  background:var(--card);
+  padding:18px;
+  border-radius:18px;
+  box-shadow:0 10px 20px rgba(0,0,0,.05);
+}
+
+.search-box input{
+  width:100%;
+  border:none;
+  outline:none;
+  font-size:16px;
+  background:transparent;
+}
+
+
+.grid{
+  max-width:1100px;
+  margin:40px auto;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:20px;
+  padding:0 20px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 10px 20px rgba(0,0,0,.05);
+}
+
+.card h3{
+  margin-top:0;
+}
+
+.card p{
+  color:var(--muted);
+  line-height:1.6;
+}
+
+.card button{
+  margin-top:15px;
+  border:none;
+  background:var(--blue);
+  color:white;
+  padding:10px 16px;
+  border-radius:12px;
+  cursor:pointer;
+  font-weight:600;
+}
+
+.card button:hover{
+  transform:scale(1.05);
+}
+
+
+.faq{
+  max-width:900px;
+  margin:70px auto;
+  padding:0 20px;
+}
+
+.faq-item{
+  background:white;
+  margin-bottom:15px;
+  padding:20px;
+  border-radius:16px;
+  box-shadow:0 10px 20px rgba(0,0,0,.04);
+}
+
+.faq-item h4{
+  margin:0 0 10px;
+}
+
+.faq-item p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.5;
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+
+  <div class="logo">✈️ TravelPay</div>
+
+  <div class="nav-wrapper">
+    <div class="nav">
+      <a class="nav-item" href="zaplanuj podroz.html">Zaplanuj podróż</a>
+      <a class="nav-item active" href="pomoc.html">Porady</a>
+      <a class="nav-item" href="wsparcie.html">Wsparcie</a>
+    </div>
+  </div>
+
+  <div class="toggle" onclick="toggleTheme()">🌙</div>
+
+</div>
+
+<div class="hero">
+  <h1>Centrum pomocy</h1>
+  <p>Znajdź odpowiedzi na najczęstsze pytania dotyczące kursów walut, płatności i działania TravelPay.</p>
+</div>
+
+<div class="search-box">
+  <input placeholder="Szukaj pomocy...">
+</div>
+
+<div class="grid">
+
+  <div class="card">
+    <h3>💱 Kursy walut</h3>
+    <p>Dowiedz się jak aktualizowane są kursy i dlaczego mogą zmieniać się w czasie rzeczywistym.</p>
+    <button>Czytaj więcej</button>
+  </div>
+
+  <div class="card">
+    <h3>🔒 Bezpieczeństwo</h3>
+    <p>Poznaj zabezpieczenia stosowane podczas wymiany walut i płatności online.</p>
+    <button>Czytaj więcej</button>
+  </div>
+
+  <div class="card">
+    <h3>✈️ Podróże</h3>
+    <p>Sprawdź wskazówki dotyczące płatności za granicą oraz przewalutowań.</p>
+    <button>Czytaj więcej</button>
+  </div>
+
+</div>
+
+<div class="faq">
+
+  <div class="faq-item">
+    <h4>Jak często aktualizowane są kursy?</h4>
+    <p>Kursy odświeżane są automatycznie co kilka sekund.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>Czy TravelPay pobiera prowizję?</h4>
+    <p>Niektóre operacje mogą zawierać niewielką opłatę zależną od operatora płatności.</p>
+  </div>
+
+  <div class="faq-item">
+    <h4>Czy mogę korzystać za granicą?</h4>
+    <p>Tak. System został przygotowany z myślą o podróżach międzynarodowych.</p>
+  </div>
+
+</div>
+
+<script>
+function applyTheme(theme){
+  if(theme === "dark"){
+    document.body.classList.add("dark");
+    document.querySelector(".toggle").innerText = "☀️";
+  }else{
+    document.body.classList.remove("dark");
+    document.querySelector(".toggle").innerText = "🌙";
+  }
+}
+
+function toggleTheme(){
+  const isDark = document.body.classList.toggle("dark");
+
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+
+  document.querySelector(".toggle").innerText =
+    isDark ? "☀️" : "🌙";
+}
+
+applyTheme(localStorage.getItem("theme"));
+</script>
+
+</body>
+</html>
