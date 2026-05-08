@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TravelPay</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --bg:#f5f6f8;
+  --card:#ffffff;
+  --text:#111;
+  --muted:#6b7280;
+  --blue:#2563eb;
+  --footer:#e5e7eb;
+}
+
+body.dark{
+  --bg:#020617;
+  --card:#0f172a;
+  --text:#e2e8f0;
+  --muted:#94a3b8;
+  --footer:#0b1220;
+}
+
+*{
+  box-sizing:border-box;
+  transition:.25s;
+}
+
+body{
+  margin:0;
+  font-family:'Inter',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 30px;
+  border-bottom:1px solid rgba(0,0,0,.1);
+}
+
+.logo{
+  font-weight:700;
+  color:var(--blue);
+  font-size:18px;
+}
+
+.nav{
+  display:flex;
+  gap:30px;
+}
+
+.nav a{
+  text-decoration:none;
+}
+
+.nav-item{
+  cursor:pointer;
+  color:var(--muted);
+  position:relative;
+}
+
+.nav-item:hover{
+  color:var(--text);
+}
+
+.nav-item::after{
+  content:"";
+  position:absolute;
+  bottom:-4px;
+  left:0;
+  width:0;
+  height:2px;
+  background:var(--blue);
+  transition:.3s;
+}
+
+.nav-item:hover::after{
+  width:100%;
+}
+
+.nav-item.active{
+  color:var(--text);
+  font-weight:600;
+}
+
+.nav-item.active::after{
+  width:100%;
+}
+
+.toggle{
+  cursor:pointer;
+  font-size:22px;
+  padding:6px 10px;
+  border-radius:10px;
+  background:var(--card);
+  user-select:none;
+}
+
+.hero{
+  text-align:center;
+  margin:40px 0;
+}
+
+.hero h1{font-size:28px;}
+.hero span{color:var(--blue);}
+.hero p{color:var(--muted);}
+
+.container{
+  display:flex;
+  justify-content:center;
+}
+
+.app{
+  width:100%;
+  max-width:420px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:16px;
+  padding:16px;
+  margin-bottom:16px;
+  box-shadow:0 10px 20px rgba(0,0,0,.05);
+}
+
+.input-row{
+  display:flex;
+  justify-content:space-between;
+  background:#eef0f3;
+  padding:12px;
+  border-radius:12px;
+  cursor:pointer;
+}
+
+body.dark .input-row{
+  background:#1e293b;
+}
+
+.amount-input{
+  border:none;
+  background:transparent;
+  font-size:18px;
+  font-weight:600;
+  width:100px;
+  text-align:right;
+}
+
+.result{
+  text-align:center;
+}
+
+.result h2{
+  color:var(--blue);
+}
+
+.live{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.badge{
+  background:#22c55e20;
+  color:#22c55e;
+  padding:5px 10px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  animation:pulseText 1.2s infinite;
+}
+
+@keyframes pulseText{
+  0%{
+    transform:scale(1);
+    opacity:1;
+  }
+  50%{
+    transform:scale(1.08);
+    opacity:0.6;
+  }
+  100%{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+.modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.5);
+  justify-content:center;
+  align-items:center;
+}
+
+.modal-box{
+  background:var(--card);
+  padding:16px;
+  border-radius:16px;
+  width:90%;
+  max-width:350px;
+}
+
+.search{
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  margin-bottom:10px;
+}
+
+.currency{
+  padding:10px;
+  border-radius:10px;
+  cursor:pointer;
+}
+
+.currency:hover{
+  background:#e0e7ff;
+}
+
+body.dark .currency:hover{
+  background:#1e293b;
+}
+
+.footer{
+  margin-top:80px;
+  background:var(--footer);
+  padding:40px 20px;
+  width:100%;
+  display:block;
+}
+
+.footer-container{
+  max-width:1100px;
+  margin:auto;
+  display:flex;
+  justify-content:space-between;
+  flex-wrap:wrap;
+}
+
+.footer-col{
+  margin-bottom:20px;
+}
+
+.footer-col h4{
+  margin-bottom:10px;
+}
+
+.footer-col span{
+  display:block;
+  margin:5px 0;
+  cursor:pointer;
+  color:var(--muted);
+}
+
+.footer-col span:hover{
+  color:var(--blue);
+}
+
+.icons{
+  display:flex;
+  gap:15px;
+  margin-top:10px;
+}
+
+.icon{
+  cursor:pointer;
+  font-size:18px;
+}
+
+.icon:hover{
+  transform:scale(1.2);
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+  <div class="logo">✈️ TravelPay</div>
+
+  <div class="nav">
+  <a class="nav-item active" href="zaplanuj podroz.html">Zaplanuj podróż</a>
+  <a class="nav-item" href="pomoc.html">Porady</a>
+  <a class="nav-item" href="wsparcie.html">Wsparcie</a>
+</div>
+
+  <div class="toggle" onclick="toggleTheme()">🌙</div>
+</div>
+
+<div class="hero">
+  <h1>Gotowy na <span>nową podróż?</span></h1>
+  <p>Sprawdź kursy walut w czasie rzeczywistym</p>
+</div>
+
+<div class="container">
+<div class="app">
+
+<div class="card">
+  <div>Ile masz?</div>
+  <div class="input-row">
+    <div>USD</div>
+    <input class="amount-input" value="1000" type="number">
+  </div>
+</div>
+
+<div class="card">
+  <div>Waluta docelowa</div>
+  <div class="input-row" onclick="openModal()">
+    <div id="target">PLN</div>
+  </div>
+</div>
+
+<div class="card result">
+  <h2 id="result"></h2>
+  <div id="rate"></div>
+</div>
+
+<div class="card live">
+  <div>
+    <small>Kurs</small>
+    <div id="live"></div>
+  </div>
+  <div class="badge">LIVE</div>
+</div>
+
+</div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <input class="search" placeholder="Szukaj..." oninput="filterCurrency(this.value)">
+    <div id="list"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="footer-container">
+
+    <div class="footer-col">
+      <h4>TravelPay</h4>
+      <p style="color:var(--muted)">Twój kantor online</p>
+
+      <div class="icons">
+        <div class="icon">🌐</div>
+        <div class="icon">💬</div>
+        <div class="icon">📱</div>
+      </div>
+    </div>
+
+    <div class="footer-col">
+      <h4>Firma</h4>
+      <span>O nas</span>
+      <span>Kariera</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>Prawo</h4>
+      <span>Prywatność</span>
+      <span>Regulamin</span>
+    </div>
+
+    <div class="footer-col">
+      <h4>Wsparcie</h4>
+      <span>Pomoc</span>
+      <span>FAQ</span>
+    </div>
+
+  </div>
+</div>
+
+<script>
+
+let rates = {};
+let target = "PLN";
+
+const input = document.querySelector(".amount-input");
+
+// 🔥 KLUCZ: API z USD jako bazą
+async function loadRates(){
+  try{
+    const res = await fetch("https://api.frankfurter.app/latest?from=USD");
+    const data = await res.json();
+
+    rates = data.rates;
+    rates["USD"] = 1;
+
+    render();
+    calc();
+
+  }catch(e){
+    console.error("API error:", e);
+  }
+}
+
+// 🧮 PRZELICZANIE
+function calc(){
+  const val = parseFloat(input.value) || 0;
+
+  if(!rates[target]){
+    document.getElementById("result").innerText = "Ładowanie...";
+    return;
+  }
+
+  const result = val * rates[target];
+
+  document.getElementById("result").innerText =
+    result.toFixed(2) + " " + target;
+
+  document.getElementById("rate").innerText =
+    `1 USD = ${rates[target].toFixed(4)} ${target}`;
+
+  document.getElementById("live").innerText =
+    `1 USD = ${rates[target].toFixed(4)} ${target}`;
+}
+
+input.oninput = calc;
+
+// 📦 MODAL
+function openModal(){
+  document.getElementById("modal").style.display = "flex";
+
+  if(Object.keys(rates).length === 0){
+    document.getElementById("list").innerText = "Ładowanie...";
+  } else {
+    render();
+  }
+}
+
+function closeModal(){
+  document.getElementById("modal").style.display = "none";
+}
+
+// klik poza zamyka
+document.getElementById("modal").addEventListener("click", e=>{
+  if(e.target.id === "modal") closeModal();
+});
+
+// wybór waluty
+function select(c){
+  target = c;
+  document.getElementById("target").innerText = c;
+  closeModal();
+  calc();
+}
+
+// lista walut
+function render(filter=""){
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+
+  Object.keys(rates)
+    .filter(c => c.toLowerCase().includes(filter.toLowerCase()))
+    .sort()
+    .forEach(c=>{
+      const div = document.createElement("div");
+      div.className = "currency";
+      div.innerText = c;
+      div.onclick = ()=>select(c);
+      list.appendChild(div);
+    });
+}
+
+function filterCurrency(val){
+  render(val);
+}
+
+// 🌙 motyw
+function applyTheme(theme){
+  if(theme === "dark"){
+    document.body.classList.add("dark");
+    document.querySelector(".toggle").innerText = "☀️";
+  } else {
+    document.body.classList.remove("dark");
+    document.querySelector(".toggle").innerText = "🌙";
+  }
+}
+
+function toggleTheme(){
+  const isDark = document.body.classList.toggle("dark");
+
+  localStorage.setItem("theme", isDark ? "dark" : "light");
+
+  document.querySelector(".toggle").innerText =
+    isDark ? "☀️" : "🌙";
+}
+
+// 🔁 LIVE
+setInterval(loadRates, 15000);
+
+// START
+applyTheme(localStorage.getItem("theme"));
+loadRates();
+
+</script>
+
+</body>
+</html>
